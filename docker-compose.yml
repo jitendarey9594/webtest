@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  php-apache-environment:
+    container_name: php-apache
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    volumes:
+      - ./xampp/htdocs/cwj/docker-compose:/var/www/html/
+    ports:
+      - "8000:80"
+                         
+  db:
+    container_name: db
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: autoz2023
+      MYSQL_DATABASE: test
+      MYSQL_USER: autoz
+      MYSQL_PASSWORD: autoz2023
+    ports:
+      - "9906:3306"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8080:80"
+    restart: always
+    environment:
+      PMA_HOST: db
+    depends_on:
+      - db
